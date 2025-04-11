@@ -5,6 +5,7 @@ import TodoItem from './TodoItem';
 const TodoList = () => {
     const [todos, setTodos] = useState([]);
     const [newTodo, setNewTodo] = useState('');
+    const [newDeadline, setNewDeadline] = useState(''); // Thêm state cho deadline
     const [filter, setFilter] = useState('All');
 
     useEffect(() => {
@@ -21,9 +22,11 @@ const TodoList = () => {
             const response = await axios.post('http://localhost:8080/api/todos', {
                 title: newTodo,
                 completed: false,
+                deadline: newDeadline || null, // Gửi deadline lên server
             });
             setTodos([...todos, response.data]);
             setNewTodo('');
+            setNewDeadline(''); // Reset deadline sau khi thêm
         }
     };
 
@@ -53,13 +56,22 @@ const TodoList = () => {
             <div className="todo-header">
                 <h1>todos</h1>
             </div>
-            <input
-                className="todo-input"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-                onKeyDown={addTodo}
-                placeholder="What needs to be done?"
-            />
+            <div style={{ display: 'flex', gap: '10px', padding: '0 20px' }}>
+                <input
+                    className="todo-input"
+                    value={newTodo}
+                    onChange={(e) => setNewTodo(e.target.value)}
+                    onKeyDown={addTodo}
+                    placeholder="What needs to be done?"
+                    style={{ flex: 1 }}
+                />
+                <input
+                    type="datetime-local"
+                    value={newDeadline}
+                    onChange={(e) => setNewDeadline(e.target.value)}
+                    style={{ padding: '10px', fontSize: '16px', border: 'none', borderBottom: '1px solid #ededed' }}
+                />
+            </div>
             <ul className="todo-list">
                 {filteredTodos.map((todo) => (
                     <TodoItem

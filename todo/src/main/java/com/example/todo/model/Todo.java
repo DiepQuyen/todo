@@ -2,6 +2,7 @@ package com.example.todo.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 
 @Entity
 public class Todo {
@@ -10,6 +11,23 @@ public class Todo {
     private Long id;
     private String title;
     private boolean completed;
+    private LocalDateTime deadline; // Thêm trường deadline
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    public Todo(Long id, String title, boolean completed, LocalDateTime deadline) {
+        this.id = id;
+        this.title = title;
+        this.completed = completed;
+        this.deadline = deadline;
+    }
+
 
     public Todo() {
     }
